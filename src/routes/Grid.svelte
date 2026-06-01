@@ -48,8 +48,8 @@
 <style>
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		grid-template-rows: repeat(4, 1fr);
+		grid-template-columns: repeat(var(--size), 1fr);
+		grid-template-rows: repeat(var(--size), 1fr);
 		height: 100%;
 		grid-gap: 2px;
 		perspective: 100vw;

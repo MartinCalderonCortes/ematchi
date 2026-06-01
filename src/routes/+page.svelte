@@ -5,6 +5,7 @@
 	import { levels } from './levels';
 
 	let state: 'waiting' | 'playing' | 'paused' | 'won' | 'lost' = 'waiting';
+	let game: Game;
 </script>
 
 {#if state !== 'playing'}
@@ -24,18 +25,44 @@
 
 		<div class="levels-buttons">
 			{#if state === 'paused'}
-				<button>resume</button>
-				<button>quit</button>
+				<button
+					on:click={() => {
+						game.resume();
+					}}>resume</button
+				>
+				<button
+					on:click={() => {
+						state = 'waiting';
+					}}>quit</button
+				>
 			{:else}
 				{#each levels as level}
-					<button>{level.label}</button>
+					<button
+						on:click={() => {
+							game.start(level);
+						}}>{level.label}</button
+					>
 				{/each}
 			{/if}
 		</div>
 	</Modal>
 {/if}
 
-<Game />
+<Game
+	bind:this={game}
+	on:play={() => {
+		state = 'playing';
+	}}
+	on:won={() => {
+		state = 'won';
+	}}
+	on:lose={() => {
+		state = 'lost';
+	}}
+	on:pause={() => {
+		state = 'paused';
+	}}
+/>
 
 <style>
 	h1 {
