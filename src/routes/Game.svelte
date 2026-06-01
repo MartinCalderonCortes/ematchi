@@ -8,7 +8,7 @@
 	import { onMount } from 'svelte';
 
 	const level = levels[0];
-	//let size: number = level.size;
+	let size: number = level.size;
 	let grid: string[] = createGrid(level);
 	let emojisFound: string[] = [];
 	let remaining: number = level.duration;
@@ -18,7 +18,7 @@
 		const copy = [...level.emojis];
 		const pairs: string[] = [];
 
-		for (let i = 0; i < level.size ** 2 / 2; i++) {
+		for (let i = 0; i < size ** 2 / 2; i++) {
 			const index = Math.floor(Math.random() * copy.length);
 			const emoji = copy[index];
 
@@ -55,13 +55,25 @@
 
 <div class="game">
 	<header class="header">
-		<Countdown {remaining} duration={level.duration} />
+		<Countdown
+			{remaining}
+			duration={level.duration}
+			on:click={() => {
+				playing = !playing;
+				countdown();
+			}}
+		/>
 	</header>
 	<section class="grid-container">
 		<Grid
 			{grid}
 			on:found={(e) => {
 				emojisFound = [...emojisFound, e.detail.emoji];
+				if (emojisFound.length === size ** 2 / 2) {
+					//TODO pause the game
+					playing = false;
+					countdown();
+				}
 			}}
 			{emojisFound}
 		/>
