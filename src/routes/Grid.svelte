@@ -40,6 +40,7 @@
 				}
 			}}
 			isEmojiFound={emojisFound.includes(emoji)}
+			group={grid.indexOf(emoji) === index ? 'a' : 'b'}
 		/>
 	{/each}
 </div>
